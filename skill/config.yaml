@@ -109,6 +109,20 @@ domains:
       critique: [contrarian, depth, breadth, practical]
       survey: [breadth, practical, depth, contrarian]
 
+  webdesign:
+    description: "Création de sites web, landing pages, interfaces utilisateur"
+    perspectives:
+      ux_design: "Optimise la beauté visuelle, le plaisir utilisateur, l'identité de marque. Palette, typographie, espacement, animations, rythme visuel, dark/light mode."
+      conversion: "Maximise le taux de clic CTA, les sign-ups, l'engagement. Copywriting, placement CTA, objection handling, social proof, emotional journey."
+      performance: "Optimise la vitesse de chargement (FCP, LCP, TBT, CLS). Budget de poids, stratégie fonts, render-blocking, lazy loading, 3G target."
+      accessibility: "Assure la conformité WCAG 2.1 AA. HTML sémantique, contrastes, navigation clavier, screen reader, prefers-reduced-motion, focus visible."
+    priority_by_goal:
+      mvp: [ux_design, conversion, performance, accessibility]
+      redesign: [ux_design, conversion, accessibility, performance]
+      optimize: [performance, accessibility, ux_design, conversion]
+      convert: [conversion, ux_design, performance, accessibility]
+      accessible: [accessibility, ux_design, performance, conversion]
+
   strategy:
     description: "Planification stratégique et prise de décision"
     perspectives:

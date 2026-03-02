@@ -1,0 +1,12 @@
+{
+  "domain": "research",
+  "goal": "decide",
+  "task": "Evaluate whether to adopt GraphQL vs REST for our new public API. We currently have a REST API serving 50+ endpoints to mobile and web clients. Considering migration for the v2 API.",
+  "constraints": [
+    "Team of 4 backend developers, 2 frontend",
+    "Current stack: Node.js + Express + PostgreSQL",
+    "Must support real-time subscriptions for notifications",
+    "API serves both mobile app and partner integrations",
+    "Budget for migration: 3 months of engineering time"
+  ]
+}

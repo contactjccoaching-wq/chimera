@@ -1,0 +1,12 @@
+{
+  "domain": "code",
+  "goal": "refactor",
+  "task": "Refactor the user authentication module. Currently a single 800-line file with session handling, JWT validation, OAuth2 flows, password hashing, and rate limiting all mixed together.",
+  "constraints": [
+    "Must remain backward-compatible with existing API endpoints",
+    "No new external dependencies",
+    "Must pass existing test suite without modification",
+    "Python 3.11+, FastAPI framework",
+    "Must complete within 2 sprint days"
+  ]
+}

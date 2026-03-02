@@ -1,0 +1,12 @@
+{
+  "domain": "fitness",
+  "goal": "muscle",
+  "task": "Create a 6-week hypertrophy program for a 28-year-old intermediate male training 4 days per week in a fully equipped gym. Focus on upper body mass with attention to lagging shoulders.",
+  "constraints": [
+    "4 sessions per week maximum",
+    "90 minutes per session including warm-up",
+    "Full gym equipment available",
+    "Minor left shoulder impingement — avoid extreme overhead positions",
+    "Intermediate level — 2 years training experience"
+  ]
+}

@@ -1,0 +1,123 @@
+# ============================================================
+# Chimera — Configuration
+# ============================================================
+# Pipeline bio-inspiré domain-agnostic.
+# 3 systèmes : Slime Mold → PRISM → Immunitaire
+#
+# Chimera fonctionne pour TOUT domaine. Les perspectives PRISM
+# et anticorps immunitaires sont configurés par preset de domaine.
+# ============================================================
+
+chimera:
+  version: "1.0.0"
+
+# --- Slime Mold (Expansion / Élagage) ---
+slime_mold:
+  expand_model: "sonnet"         # Créativité → explorer large
+  prune_model: "haiku"           # Règles strictes → élagage
+  max_branches: 8                # Max branches en expansion
+  viable_min: 3                  # Branches viables après élagage
+  viable_max: 5
+
+# --- PRISM (N perspectives parallèles + compilation) ---
+prism:
+  agent_model: "sonnet"          # Perspectives en parallèle
+  compiler_model: "sonnet"       # Synthèse méritocratique
+  n_perspectives: 4              # Nombre de perspectives (défaut)
+  # Mode: "directed" (perspectives nommées) ou "stochastic" (N instances identiques, pure PRISM)
+  mode: "directed"
+
+# --- Système Immunitaire ---
+immune:
+  scan_model: "haiku"            # Pattern matching → rapide
+  memory_path: "immune_memory.json"
+  max_antibodies_per_scan: 20
+  auto_add_threats: true
+  severity_levels: [critical, warning, info]
+
+# --- Logs bio ---
+logging:
+  bio_events: true
+  cost_tracking: true
+
+# ============================================================
+# PRESETS DE DOMAINE
+# ============================================================
+# Chaque preset définit :
+#   perspectives: les angles d'analyse pour PRISM
+#   priority_by_goal: ordre de priorité des perspectives selon l'objectif
+#   description: contexte injecté dans les prompts
+#
+# Usage : /chimera domain=fitness goal=muscle
+#         /chimera domain=code goal=refactor
+#         /chimera domain=custom perspectives="sécurité,performance,UX"
+# ============================================================
+
+domains:
+  fitness:
+    description: "Programme d'entraînement physique personnalisé"
+    perspectives:
+      volume: "Maximise le volume total (séries × reps × charge). Privilégie séries multiples, techniques d'accumulation, progression par ajout de séries."
+      intensity: "Maximise l'intensité relative (% 1RM, proximité de l'échec). Privilégie drop sets, rest-pause, clusters, séries lourdes, progression par charge."
+      recovery: "Gère la fatigue avec périodisation ondulante. Alterne charges lourdes/légères, intègre deloads, programme les exercices taxants en début de semaine."
+      balance: "Assure l'équilibre musculaire et postural. Ratio push/pull 1:1.5, équilibre quad/ischio, muscles stabilisateurs, mobilité."
+    priority_by_goal:
+      muscle: [volume, intensity, balance, recovery]
+      strength: [intensity, volume, recovery, balance]
+      endurance: [volume, recovery, balance, intensity]
+      weight_loss: [volume, recovery, balance, intensity]
+      definition: [intensity, volume, recovery, balance]
+      wellness: [balance, recovery, volume, intensity]
+
+  code:
+    description: "Architecture et implémentation logicielle"
+    perspectives:
+      performance: "Optimise la vitesse d'exécution, la mémoire, la complexité algorithmique. Identifie les bottlenecks et propose des optimisations concrètes."
+      security: "Analyse les vulnérabilités (OWASP top 10, injection, XSS, auth). Propose des corrections et des patterns sécurisés."
+      maintainability: "Privilégie la lisibilité, les patterns de design, le découplage, les tests. Réduit la dette technique."
+      scalability: "Conçoit pour la montée en charge. Horizontal scaling, caching, async, microservices vs monolith."
+    priority_by_goal:
+      refactor: [maintainability, performance, security, scalability]
+      optimize: [performance, scalability, maintainability, security]
+      secure: [security, maintainability, performance, scalability]
+      scale: [scalability, performance, maintainability, security]
+      mvp: [maintainability, performance, scalability, security]
+
+  writing:
+    description: "Rédaction de contenu (articles, docs, copywriting)"
+    perspectives:
+      clarity: "Maximise la compréhension. Phrases courtes, structure logique, vocabulaire accessible. Élimine l'ambiguïté."
+      depth: "Maximise la valeur informationnelle. Sources, nuances, contre-arguments, exemples concrets."
+      engagement: "Maximise l'attention du lecteur. Storytelling, hooks, rythme, voix active, appels à l'action."
+      accuracy: "Vérifie la justesse factuelle. Sources fiables, données récentes, pas de bullshit."
+    priority_by_goal:
+      blog: [engagement, clarity, depth, accuracy]
+      technical: [accuracy, clarity, depth, engagement]
+      marketing: [engagement, clarity, accuracy, depth]
+      academic: [accuracy, depth, clarity, engagement]
+
+  research:
+    description: "Recherche et analyse multi-sources"
+    perspectives:
+      breadth: "Couvre le maximum de sources et d'angles. Cartographie complète du sujet."
+      depth: "Approfondit les sources clés. Analyse critique, méthodologie, biais."
+      contrarian: "Cherche les contre-arguments, les limites, les failles. Joue l'avocat du diable."
+      practical: "Extrait les implications concrètes. Actionable insights, recommandations, next steps."
+    priority_by_goal:
+      explore: [breadth, depth, contrarian, practical]
+      decide: [practical, depth, contrarian, breadth]
+      critique: [contrarian, depth, breadth, practical]
+      survey: [breadth, practical, depth, contrarian]
+
+  strategy:
+    description: "Planification stratégique et prise de décision"
+    perspectives:
+      opportunity: "Identifie les opportunités, le potentiel de croissance, les avantages compétitifs."
+      risk: "Identifie les risques, les menaces, les scénarios d'échec. Analyse SWOT côté négatif."
+      feasibility: "Évalue la faisabilité technique, financière, humaine. Timeline réaliste."
+      innovation: "Propose des approches non conventionnelles, des disruptions, des pivots créatifs."
+    priority_by_goal:
+      launch: [feasibility, opportunity, risk, innovation]
+      pivot: [innovation, opportunity, feasibility, risk]
+      defend: [risk, feasibility, opportunity, innovation]
+      grow: [opportunity, innovation, feasibility, risk]

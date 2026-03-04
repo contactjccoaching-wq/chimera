@@ -39,7 +39,22 @@ Example invocations:
 1. Read the config: `~/.claude/skills/chimera/config.yaml`
 2. Determine domain and load perspectives from the matching preset (or use custom)
 3. Determine perspective priority order from goal
-4. Log: `[CHIMERA] Domain: {domain} | Goal: {goal} | Perspectives: {list}`
+4. Wrap domain as array: `domains = [domain]` (or use provided array)
+5. Log: `[CHIMERA] Domains: {domains} | Goal: {goal} | Perspectives: {list}`
+
+### Phase 0.5 — Cheatsheet Injection (positive patterns)
+
+Load cheatsheet strategies to improve PRISM perspective quality:
+
+1. Read `~/.claude/skills/immune/cheatsheet_memory.json`
+2. Filter strategies where ANY of the strategy's `domains` overlaps with `domains`, OR has `"_global"`
+3. Classify HOT/COLD using same criteria as immune (effectiveness >= 0.7, seen_count >= 3, last_seen < 30 days)
+4. Cap at 15 HOT strategies
+5. Format as XML `<cheatsheet>` block (see immune skill.md Step 0e for format)
+
+Log: `[CHIMERA:CHEATSHEET] {n_hot} HOT + {n_cold} COLD strategies loaded`
+
+The cheatsheet block will be injected into each PRISM perspective prompt in Phase 2.
 
 ### Phase 1 — SLIME MOLD (Explore → Prune)
 
@@ -86,7 +101,7 @@ Load the perspectives for the domain. For each perspective, spawn a `chimera-pri
 
 Each agent gets:
 ```
-DOMAIN: {domain}
+DOMAIN: {domains}
 TASK: {task description}
 CONSTRAINTS: {constraints}
 
@@ -96,7 +111,10 @@ PERSPECTIVE INSTRUCTIONS: {perspective description from config}
 VIABLE OPTIONS (from Slime Mold analysis):
 {JSON from step 1.2}
 
+{cheatsheet XML block from Phase 0.5, if any strategies were loaded}
+
 Build a complete solution optimized for your perspective. Use ONLY the viable options above.
+Apply the cheatsheet strategies where relevant to improve quality.
 ```
 
 Log: `[PRISM:GEN] Launching {N} perspectives in parallel...`
@@ -132,58 +150,49 @@ Log: `[PRISM:COMPILE] Compiling... priority: {p1} > {p2} > {p3} > {p4}`
 Wait for result.
 Log: `[PRISM:COMPILE] ✓ Anchor: {anchor_perspective} | Injections from: {list}`
 
-### Phase 3 — IMMUNE SYSTEM (Scan → Correct → Update)
+### Phase 3 — IMMUNE SYSTEM v3 (Scan → Correct → Learn)
 
-**Step 3.1 — Load Antibodies**
+**Step 3.1 — Load Antibodies (Hot/Cold)**
 
-Read `~/.claude/skills/chimera/immune_memory.json`
-Filter antibodies where `domain == current_domain` OR `domain == "_global"`
-Keep max 20 most relevant (by seen_count descending, then severity).
+Read `~/.claude/skills/immune/immune_memory.json`
+Filter antibodies where ANY of the antibody's `domains` overlaps with `domains`, OR has `"_global"`.
+Classify HOT/COLD using immune v3 criteria (severity==critical, seen_count>=3, last_seen<30d).
+Cap at 15 HOT. Build COLD summary as comma-separated keywords.
 
-Log: `[IMMUNE:SCAN] Loading {n} antibodies / {total} total`
+Log: `[IMMUNE:SCAN] {n_hot} HOT + {n_cold} COLD antibodies (domains: {domains})`
 
 **Step 3.2 — Scan**
 
-Spawn the `chimera-immune-scan` agent (Haiku) with:
-```
-DOMAIN: {domain}
-TASK: {task description}
-CONSTRAINTS: {constraints}
-
-COMPILED OUTPUT:
-{JSON from step 2.2}
-
-KNOWN ANTIBODIES:
-{filtered antibodies JSON}
-
-Scan the output for known patterns and new threats.
+Spawn the `immune-scan` agent (Haiku) with XML-structured prompt:
+```xml
+<scan_request>
+  <domains>{domains as JSON array}</domains>
+  <task>{task description}</task>
+  <constraints>{constraints}</constraints>
+  <content>{compiled output from step 2.2}</content>
+  <hot_antibodies>{JSON array of HOT antibodies}</hot_antibodies>
+  <cold_summary>{comma-separated COLD keywords}</cold_summary>
+  <cheatsheet_applied>{list of strategy IDs from Phase 0.5, or "none"}</cheatsheet_applied>
+</scan_request>
 ```
 
 Log: `[IMMUNE:SCAN] Scanning...`
 Wait for result.
 
 If corrections applied:
-  Log: `[IMMUNE:SCAN] ⚠ Match {antibody_id}: {original} → {corrected}`
+  Log: `[IMMUNE:SCAN] Match {antibody_id}: {original} → {corrected}`
 If new threats detected:
   Log: `[IMMUNE:DETECT] New threat: {pattern}`
+If new strategies detected:
+  Log: `[IMMUNE:DETECT] New strategy: {pattern}`
 
-**Step 3.3 — Update Memory**
+**Step 3.3 — Update Immune Memory**
 
-If `new_threats_detected` is not empty AND config `auto_add_threats` is true:
-1. Read current immune_memory.json
-2. For each new threat, add an antibody with:
-   - id: "AB-{next_number}"
-   - domain: from the threat's recommended_antibody
-   - pattern, severity, correction: from the threat
-   - seen_count: 1
-   - first_seen: today's date
-   - last_seen: today's date
-3. Increment `stats.antibodies_total`
-4. Write back to immune_memory.json
+Follow the same logic as immune skill.md Step 3 (COLD deduplication, reactivation, new antibody creation).
 
-Log: `[IMMUNE:UPDATE] +{n} antibodies added → total: {new_total}`
+Log: `[IMMUNE:UPDATE] +{n_ab} antibodies | +{n_cs} strategies → total: {ab_total} AB + {cs_total} CS`
 
-Also increment `stats.outputs_checked` and `stats.issues_caught` (by number of corrections + threats).
+Also update cheatsheet memory with any `new_strategies_detected` (follow immune skill.md Step 3b).
 
 ### Phase 4 — Output
 
@@ -204,10 +213,11 @@ After the output, show a summary block:
 
 ```
 ───
-🧬 CHIMERA | domain={domain} | goal={goal}
-   [SLIME]  {total_expanded} → {viable} branches
-   [PRISM]  {N} perspectives | anchor={anchor} | {n_injections} injections
-   [IMMUNE] {scan_result} | {n_corrections} corrections | {n_new_threats} new antibodies
+CHIMERA | domains={domains} | goal={goal}
+   [CHEATSHEET] {n_strategies} strategies injected
+   [SLIME]      {total_expanded} → {viable} branches
+   [PRISM]      {N} perspectives | anchor={anchor} | {n_injections} injections
+   [IMMUNE]     {scan_result} | {n_corrections} corrections | +{n_ab} AB | +{n_cs} CS
    agents: {list of models used with counts}
 ```
 

@@ -15,6 +15,12 @@ Task + Constraints
        │
        ▼
 ┌─────────────────┐
+│ 0.5 CHEATSHEET  │  Inject winning strategies from persistent memory
+│  (Positive)     │  Hot/Cold tiered, domain-filtered
+└────────┬────────┘
+         │ strategies injected into prompts
+         ▼
+┌─────────────────┐
 │  1. SLIME MOLD  │  Explore ALL viable approaches → Prune by constraints
 │  (Physarum)     │  Agent: Sonnet (expand) → Haiku (prune)
 └────────┬────────┘
@@ -27,15 +33,15 @@ Task + Constraints
          │ optimal fused output
          ▼
 ┌─────────────────┐
-│  3. IMMUNE      │  Scan known error patterns → Detect new threats → Learn
-│  (Adaptive)     │  Agent: Haiku (scanner) + persistent memory
+│  3. IMMUNE v3   │  Scan errors + detect new strategies → Learn both
+│  (Adaptive)     │  Agent: Haiku (scanner) + dual persistent memory
 └────────┬────────┘
          │
          ▼
    Optimized Output
 ```
 
-Total: ~7 agent calls per run (expand, prune, N perspectives, compile, scan).
+Total: ~7 agent calls per run (expand, prune, N perspectives, compile, scan). Dual memory: antibodies (negative) + cheatsheet (positive).
 
 ---
 
@@ -72,11 +78,11 @@ Based on the [PRISM Framework](https://github.com/contactjccoaching-wq/prism-fra
 
 **Stochastic mode** — N identical agents explore the same prompt. Pure LLM stochasticity produces diverse trajectories. The meta-agent fuses the results.
 
-### 3. Immune System (Adaptive)
+### 3. Immune System v3 (Hybrid Adaptive)
 
-A persistent memory of known errors (antibodies). Each output is scanned against known patterns AND analyzed for new threats. New threats are automatically added to memory.
+Dual persistent memory: **antibodies** (negative patterns to avoid) and **cheatsheet** (positive strategies to repeat). Each output is scanned for errors AND analyzed for new winning strategies. Both memories grow with every run.
 
-The immune memory grows with every run. The 100th output benefits from all errors caught in the previous 99.
+The 100th output benefits from all errors caught AND all strategies discovered in the previous 99. See the standalone [Immune System](https://github.com/contactjccoaching-wq/immune) repo for details.
 
 ---
 
@@ -91,13 +97,14 @@ mkdir -p ~/.claude/skills/chimera
 cp skill/skill.md ~/.claude/skills/chimera/
 cp skill/config.yaml ~/.claude/skills/chimera/
 cp skill/immune_memory.json ~/.claude/skills/chimera/
+cp skill/cheatsheet_memory.json ~/.claude/skills/chimera/
 ```
 
 Or for a specific project only:
 ```bash
 cp skill/agents/*.md YOUR_PROJECT/.claude/agents/
 mkdir -p YOUR_PROJECT/.claude/skills/chimera
-cp skill/skill.md skill/config.yaml skill/immune_memory.json YOUR_PROJECT/.claude/skills/chimera/
+cp skill/skill.md skill/config.yaml skill/immune_memory.json skill/cheatsheet_memory.json YOUR_PROJECT/.claude/skills/chimera/
 ```
 
 ## Usage
@@ -132,6 +139,7 @@ Shows all 3 systems in action with mocked responses and full bio-event logs.
 | Project | Role |
 |---------|------|
 | **Chimera** *(this repo)* | 3-stage bio pipeline — *how to optimize* |
+| **[Immune](https://github.com/contactjccoaching-wq/immune)** | Hybrid adaptive memory (cheatsheet + antibodies) — *what to remember* |
 | **[PRISM](https://github.com/contactjccoaching-wq/prism-framework)** | N-parallel sampling + meritocratic synthesis — *what to ask* |
 | **[Spinal Loop](https://github.com/contactjccoaching-wq/spinal-loop)** | Bio-inspired model routing — *who to ask* |
 | **[DACO](https://github.com/contactjccoaching-wq/daco-framework)** | MCP tool orchestration — *what to do with it* |

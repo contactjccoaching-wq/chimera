@@ -1,156 +1,21 @@
 {
-  "version": 1,
+  "version": 3,
   "antibodies": [
-    {
-      "id": "AB-001",
-      "domain": "fitness",
-      "pattern": "curl barre + limitation coude",
-      "severity": "critical",
-      "correction": "Remplacer par curl haltère prise marteau (neutre, moins de stress articulaire)",
-      "seen_count": 0,
-      "first_seen": null,
-      "last_seen": null
-    },
-    {
-      "id": "AB-002",
-      "domain": "fitness",
-      "pattern": "GVT (10x10) + débutant",
-      "severity": "warning",
-      "correction": "Remplacer par 3x10 straight sets avec tempo contrôlé 3-1-2",
-      "seen_count": 0,
-      "first_seen": null,
-      "last_seen": null
-    },
-    {
-      "id": "AB-003",
-      "domain": "fitness",
-      "pattern": "squat lourd + débutant sédentaire",
-      "severity": "warning",
-      "correction": "Commencer par goblet squat, progresser vers back squat semaine 3-4",
-      "seen_count": 0,
-      "first_seen": null,
-      "last_seen": null
-    },
-    {
-      "id": "AB-004",
-      "domain": "fitness",
-      "pattern": "soulevé de terre + douleur lombaire",
-      "severity": "critical",
-      "correction": "Remplacer par hip thrust ou Romanian deadlift léger avec tempo lent",
-      "seen_count": 0,
-      "first_seen": null,
-      "last_seen": null
-    },
-    {
-      "id": "AB-005",
-      "domain": "fitness",
-      "pattern": "développé nuque + limitation épaule",
-      "severity": "critical",
-      "correction": "Remplacer par développé militaire devant ou Arnold press",
-      "seen_count": 0,
-      "first_seen": null,
-      "last_seen": null
-    },
-    {
-      "id": "AB-006",
-      "domain": "fitness",
-      "pattern": "drop set + débutant",
-      "severity": "warning",
-      "correction": "Remplacer par straight sets classiques, introduire drop sets semaine 4+",
-      "seen_count": 0,
-      "first_seen": null,
-      "last_seen": null
-    },
-    {
-      "id": "AB-007",
-      "domain": "fitness",
-      "pattern": "plus de 20 séries par groupe musculaire par semaine + intermédiaire",
-      "severity": "warning",
-      "correction": "Réduire à 12-16 séries/semaine/groupe pour intermédiaire",
-      "seen_count": 0,
-      "first_seen": null,
-      "last_seen": null
-    },
-    {
-      "id": "AB-008",
-      "domain": "fitness",
-      "pattern": "aucun exercice de tirage + programme push dominant",
-      "severity": "critical",
-      "correction": "Ajouter ratio push:pull 1:1.5 minimum",
-      "seen_count": 0,
-      "first_seen": null,
-      "last_seen": null
-    },
-    {
-      "id": "AB-009",
-      "domain": "fitness",
-      "pattern": "pas de deload sur 6 semaines + volume élevé",
-      "severity": "warning",
-      "correction": "Intégrer deload semaine 4 ou 5 (réduire volume 40-50%)",
-      "seen_count": 0,
-      "first_seen": null,
-      "last_seen": null
-    },
-    {
-      "id": "AB-010",
-      "domain": "code",
-      "pattern": "SQL query avec string concatenation + input utilisateur",
-      "severity": "critical",
-      "correction": "Utiliser des prepared statements / parameterized queries",
-      "seen_count": 0,
-      "first_seen": null,
-      "last_seen": null
-    },
-    {
-      "id": "AB-011",
-      "domain": "code",
-      "pattern": "API key hardcodée dans le code source",
-      "severity": "critical",
-      "correction": "Utiliser des variables d'environnement ou un secret manager",
-      "seen_count": 0,
-      "first_seen": null,
-      "last_seen": null
-    },
-    {
-      "id": "AB-012",
-      "domain": "code",
-      "pattern": "pas de gestion d'erreur sur appel API externe",
-      "severity": "warning",
-      "correction": "Ajouter try/catch avec retry et fallback gracieux",
-      "seen_count": 0,
-      "first_seen": null,
-      "last_seen": null
-    },
-    {
-      "id": "AB-013",
-      "domain": "writing",
-      "pattern": "affirmation sans source + contenu factuel",
-      "severity": "warning",
-      "correction": "Ajouter source ou qualifier avec 'selon...' / 'des études montrent...'",
-      "seen_count": 0,
-      "first_seen": null,
-      "last_seen": null
-    },
-    {
-      "id": "AB-014",
-      "domain": "writing",
-      "pattern": "paragraphe de plus de 150 mots sans sous-titre",
-      "severity": "info",
-      "correction": "Découper en sections avec des sous-titres pour la lisibilité",
-      "seen_count": 0,
-      "first_seen": null,
-      "last_seen": null
-    },
-    {
-      "id": "AB-015",
-      "domain": "_global",
-      "pattern": "réponse circulaire qui répète le même concept 3+ fois",
-      "severity": "warning",
-      "correction": "Condenser en une seule formulation claire, supprimer les redondances",
-      "seen_count": 0,
-      "first_seen": null,
-      "last_seen": null
-    }
+    {"id": "AB-001", "domains": ["fitness"], "pattern": "curl barre + limitation coude", "severity": "critical", "correction": "Remplacer par curl haltère prise marteau (neutre, moins de stress articulaire)", "seen_count": 0, "first_seen": null, "last_seen": null},
+    {"id": "AB-002", "domains": ["fitness"], "pattern": "GVT (10x10) + débutant", "severity": "warning", "correction": "Remplacer par 3x10 straight sets avec tempo contrôlé 3-1-2", "seen_count": 0, "first_seen": null, "last_seen": null},
+    {"id": "AB-003", "domains": ["fitness"], "pattern": "squat lourd + débutant sédentaire", "severity": "warning", "correction": "Commencer par goblet squat, progresser vers back squat semaine 3-4", "seen_count": 0, "first_seen": null, "last_seen": null},
+    {"id": "AB-004", "domains": ["fitness"], "pattern": "soulevé de terre + douleur lombaire", "severity": "critical", "correction": "Remplacer par hip thrust ou Romanian deadlift léger avec tempo lent", "seen_count": 0, "first_seen": null, "last_seen": null},
+    {"id": "AB-005", "domains": ["fitness"], "pattern": "développé nuque + limitation épaule", "severity": "critical", "correction": "Remplacer par développé militaire devant ou Arnold press", "seen_count": 0, "first_seen": null, "last_seen": null},
+    {"id": "AB-006", "domains": ["fitness"], "pattern": "drop set + débutant", "severity": "warning", "correction": "Remplacer par straight sets classiques, introduire drop sets semaine 4+", "seen_count": 0, "first_seen": null, "last_seen": null},
+    {"id": "AB-007", "domains": ["fitness"], "pattern": "plus de 20 séries par groupe musculaire par semaine + intermédiaire", "severity": "warning", "correction": "Réduire à 12-16 séries/semaine/groupe pour intermédiaire", "seen_count": 0, "first_seen": null, "last_seen": null},
+    {"id": "AB-008", "domains": ["fitness"], "pattern": "aucun exercice de tirage + programme push dominant", "severity": "critical", "correction": "Ajouter ratio push:pull 1:1.5 minimum", "seen_count": 0, "first_seen": null, "last_seen": null},
+    {"id": "AB-009", "domains": ["fitness"], "pattern": "pas de deload sur 6 semaines + volume élevé", "severity": "warning", "correction": "Intégrer deload semaine 4 ou 5 (réduire volume 40-50%)", "seen_count": 0, "first_seen": null, "last_seen": null},
+    {"id": "AB-010", "domains": ["code"], "pattern": "SQL query avec string concatenation + input utilisateur", "severity": "critical", "correction": "Utiliser des prepared statements / parameterized queries", "seen_count": 0, "first_seen": null, "last_seen": null},
+    {"id": "AB-011", "domains": ["code"], "pattern": "API key hardcodée dans le code source", "severity": "critical", "correction": "Utiliser des variables d'environnement ou un secret manager", "seen_count": 0, "first_seen": null, "last_seen": null},
+    {"id": "AB-012", "domains": ["code"], "pattern": "pas de gestion d'erreur sur appel API externe", "severity": "warning", "correction": "Ajouter try/catch avec retry et fallback gracieux", "seen_count": 0, "first_seen": null, "last_seen": null},
+    {"id": "AB-013", "domains": ["writing"], "pattern": "affirmation sans source + contenu factuel", "severity": "warning", "correction": "Ajouter source ou qualifier avec 'selon...' / 'des études montrent...'", "seen_count": 0, "first_seen": null, "last_seen": null},
+    {"id": "AB-014", "domains": ["writing"], "pattern": "paragraphe de plus de 150 mots sans sous-titre", "severity": "info", "correction": "Découper en sections avec des sous-titres pour la lisibilité", "seen_count": 0, "first_seen": null, "last_seen": null},
+    {"id": "AB-015", "domains": ["_global"], "pattern": "réponse circulaire qui répète le même concept 3+ fois", "severity": "warning", "correction": "Condenser en une seule formulation claire, supprimer les redondances", "seen_count": 0, "first_seen": null, "last_seen": null}
   ],
   "stats": {
     "outputs_checked": 0,

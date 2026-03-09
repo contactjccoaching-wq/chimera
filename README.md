@@ -1,5 +1,8 @@
 # Chimera
 
+[![Stars](https://img.shields.io/github/stars/contactjccoaching-wq/chimera?style=social)](https://github.com/contactjccoaching-wq/chimera)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 **Bio-inspired optimization pipeline for Claude Code.**
 
 > Three biological systems in sequence: explore everything, synthesize the best, catch the errors.
@@ -143,6 +146,7 @@ Shows all 3 systems in action with mocked responses and full bio-event logs.
 | **[PRISM](https://github.com/contactjccoaching-wq/prism-framework)** | N-parallel sampling + meritocratic synthesis — *what to ask* |
 | **[Spinal Loop](https://github.com/contactjccoaching-wq/spinal-loop)** | Bio-inspired model routing — *who to ask* |
 | **[DACO](https://github.com/contactjccoaching-wq/daco-framework)** | MCP tool orchestration — *what to do with it* |
+| **[Smart Rabbit MCP](https://github.com/contactjccoaching-wq/smartrabbit-mcp)** | AI workout generator MCP server — [smartrabbitfitness.com](https://www.smartrabbitfitness.com) |
 
 ## Author
 

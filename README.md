@@ -5,6 +5,8 @@
 
 **Bio-inspired optimization pipeline for Claude Code.**
 
+![Chimera Pipeline](chimera-pipeline.png)
+
 > Three biological systems in sequence: explore everything, synthesize the best, catch the errors.
 
 ---

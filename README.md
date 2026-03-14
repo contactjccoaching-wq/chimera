@@ -36,15 +36,15 @@ Task + Constraints
          │ optimal fused output
          ▼
 ┌─────────────────┐
-│  3. IMMUNE v3   │  Scan errors + detect new strategies → Learn both
-│  (Adaptive)     │  Agent: Haiku (scanner) + dual persistent memory
+│  3. IMMUNE v4.1 │  Scan errors + detect new strategies → Learn both
+│  (Adaptive)     │  Agent: Haiku (scanner) + SQLite FTS4 + adapter CLI
 └────────┬────────┘
          │
          ▼
    Optimized Output
 ```
 
-Total: ~7 agent calls per run (expand, prune, N perspectives, compile, scan). Dual memory: antibodies (negative) + cheatsheet (positive).
+Total: ~7 agent calls per run (expand, prune, N perspectives, compile, scan). Dual memory: antibodies (negative) + cheatsheet (positive). All immune operations go through the [Immune adapter CLI](https://github.com/contactjccoaching-wq/immune).
 
 ---
 
@@ -81,15 +81,19 @@ Based on the [PRISM Framework](https://github.com/contactjccoaching-wq/prism-fra
 
 **Stochastic mode** — N identical agents explore the same prompt. Pure LLM stochasticity produces diverse trajectories. The meta-agent fuses the results.
 
-### 3. Immune System v3 (Hybrid Adaptive)
+### 3. Immune System v4.1 (Hybrid Adaptive)
 
 Dual persistent memory: **antibodies** (negative patterns to avoid) and **cheatsheet** (positive strategies to repeat). Each output is scanned for errors AND analyzed for new winning strategies. Both memories grow with every run.
 
-The 100th output benefits from all errors caught AND all strategies discovered in the previous 99. See the standalone [Immune System](https://github.com/contactjccoaching-wq/immune) repo for details.
+All immune operations go through the **adapter CLI** (`immune-adapter.js`), with SQLite FTS4 storage + JSON dual-write for safety. Deduplication uses local embeddings (all-MiniLM-L6-v2, zero tokens) with Jaccard fallback. Includes context memory, universal scoring (0-100), and pre-compaction flush.
+
+The 100th output benefits from all errors caught AND all strategies discovered in the previous 99. See the standalone [Immune System v4.1](https://github.com/contactjccoaching-wq/immune) repo for details.
 
 ---
 
 ## Installation (Claude Code)
+
+**Prerequisite:** Install the [Immune System](https://github.com/contactjccoaching-wq/immune) first — Chimera delegates all immune operations to the Immune adapter CLI.
 
 ```bash
 # Copy agents to your Claude Code agents directory
@@ -99,15 +103,13 @@ cp skill/agents/*.md ~/.claude/agents/
 mkdir -p ~/.claude/skills/chimera
 cp skill/skill.md ~/.claude/skills/chimera/
 cp skill/config.yaml ~/.claude/skills/chimera/
-cp skill/immune_memory.json ~/.claude/skills/chimera/
-cp skill/cheatsheet_memory.json ~/.claude/skills/chimera/
 ```
 
 Or for a specific project only:
 ```bash
 cp skill/agents/*.md YOUR_PROJECT/.claude/agents/
 mkdir -p YOUR_PROJECT/.claude/skills/chimera
-cp skill/skill.md skill/config.yaml skill/immune_memory.json skill/cheatsheet_memory.json YOUR_PROJECT/.claude/skills/chimera/
+cp skill/skill.md skill/config.yaml YOUR_PROJECT/.claude/skills/chimera/
 ```
 
 ## Usage
@@ -142,7 +144,7 @@ Shows all 3 systems in action with mocked responses and full bio-event logs.
 | Project | Role |
 |---------|------|
 | **Chimera** *(this repo)* | 3-stage bio pipeline — *how to optimize* |
-| **[Immune](https://github.com/contactjccoaching-wq/immune)** | Hybrid adaptive memory (cheatsheet + antibodies) — *what to remember* |
+| **[Immune v4.1](https://github.com/contactjccoaching-wq/immune)** | Hybrid adaptive memory (cheatsheet + antibodies) + SQLite + adapter CLI — *what to remember* |
 | **[PRISM](https://github.com/contactjccoaching-wq/prism-framework)** | N-parallel sampling + meritocratic synthesis — *what to ask* |
 | **[Spinal Loop](https://github.com/contactjccoaching-wq/spinal-loop)** | Bio-inspired model routing — *who to ask* |
 | **[DACO](https://github.com/contactjccoaching-wq/daco-framework)** | MCP tool orchestration — *what to do with it* |

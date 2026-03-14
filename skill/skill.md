@@ -44,13 +44,18 @@ Example invocations:
 
 ### Phase 0.5 — Cheatsheet Injection (positive patterns)
 
-Load cheatsheet strategies to improve PRISM perspective quality:
+Load cheatsheet strategies via the immune adapter CLI:
 
-1. Read `~/.claude/skills/immune/cheatsheet_memory.json`
-2. Filter strategies where ANY of the strategy's `domains` overlaps with `domains`, OR has `"_global"`
-3. Classify HOT/COLD using same criteria as immune (effectiveness >= 0.7, seen_count >= 3, last_seen < 30 days)
-4. Cap at 15 HOT strategies
-5. Format as XML `<cheatsheet>` block (see immune skill.md Step 0e for format)
+1. Load HOT strategies:
+```bash
+node ~/.claude/skills/immune/immune-adapter.js get-strategies --domains '{domains_json}' --tier hot --limit 15
+```
+2. Load COLD strategies summary:
+```bash
+node ~/.claude/skills/immune/immune-adapter.js get-strategies --domains '{domains_json}' --tier cold
+```
+3. Format HOT as XML `<cheatsheet>` block (see immune skill.md Step 0c for format)
+4. Add COLD one-liner with comma-separated pattern keywords
 
 Log: `[CHIMERA:CHEATSHEET] {n_hot} HOT + {n_cold} COLD strategies loaded`
 
@@ -150,14 +155,18 @@ Log: `[PRISM:COMPILE] Compiling... priority: {p1} > {p2} > {p3} > {p4}`
 Wait for result.
 Log: `[PRISM:COMPILE] ✓ Anchor: {anchor_perspective} | Injections from: {list}`
 
-### Phase 3 — IMMUNE SYSTEM v3 (Scan → Correct → Learn)
+### Phase 3 — IMMUNE SYSTEM v4 (Scan → Correct → Learn)
 
 **Step 3.1 — Load Antibodies (Hot/Cold)**
 
-Read `~/.claude/skills/immune/immune_memory.json`
-Filter antibodies where ANY of the antibody's `domains` overlaps with `domains`, OR has `"_global"`.
-Classify HOT/COLD using immune v3 criteria (severity==critical, seen_count>=3, last_seen<30d).
-Cap at 15 HOT. Build COLD summary as comma-separated keywords.
+Load antibodies via the immune adapter CLI:
+```bash
+node ~/.claude/skills/immune/immune-adapter.js get-antibodies --domains '{domains_json}' --tier hot --limit 15
+```
+```bash
+node ~/.claude/skills/immune/immune-adapter.js get-antibodies --domains '{domains_json}' --tier cold
+```
+Extract COLD keywords as comma-separated summary.
 
 Log: `[IMMUNE:SCAN] {n_hot} HOT + {n_cold} COLD antibodies (domains: {domains})`
 
@@ -188,11 +197,15 @@ If new strategies detected:
 
 **Step 3.3 — Update Immune Memory**
 
-Follow the same logic as immune skill.md Step 3 (COLD deduplication, reactivation, new antibody creation).
+Use the immune adapter CLI for all memory updates (follows immune skill.md Step 3):
+
+- Matched antibodies: `node ~/.claude/skills/immune/immune-adapter.js update-antibody --id {id} --increment_seen true --last_seen {today}`
+- Deduplicate new threats via FTS4: `node ~/.claude/skills/immune/immune-adapter.js search --query "{pattern}" --type antibodies --limit 3`
+- Reactivate COLD matches or create new: `node ~/.claude/skills/immune/immune-adapter.js add-antibody --json '{...}'`
+- New strategies: `node ~/.claude/skills/immune/immune-adapter.js add-strategy --json '{...}'`
+- Stats: `node ~/.claude/skills/immune/immune-adapter.js stats`
 
 Log: `[IMMUNE:UPDATE] +{n_ab} antibodies | +{n_cs} strategies → total: {ab_total} AB + {cs_total} CS`
-
-Also update cheatsheet memory with any `new_strategies_detected` (follow immune skill.md Step 3b).
 
 ### Phase 4 — Output
 
